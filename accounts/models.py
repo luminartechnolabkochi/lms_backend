@@ -48,4 +48,13 @@ class StudentProfile(models.Model):
         return f"StudentProfile: {self.user.username}"
 
 
+from django.db.models.signals import post_save
 
+def create_trainer_profile(sender,instance,created,**kwargs):
+
+    if created and instance.role =="tutor":
+
+        TrainerProfile.objects.create(user=instance)
+
+
+post_save.connect(create_trainer_profile,sender=User)
