@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from module_management.models import Module
 from django.utils.text import slugify
+from accounts.models import User
 
 class Lesson(models.Model):
 
@@ -22,6 +23,8 @@ class Lesson(models.Model):
     
     updated_at = models.DateTimeField(auto_now=True)
 
+    created_by = models.ForeignKey(User,on_delete=models.CASCADE)
+
     resource_link = models.CharField(max_length=200,null=True)
 
     duration = models.FloatField()
@@ -40,6 +43,8 @@ class Lesson(models.Model):
                    self.order = 1
          if not self.slug:
               self.slug = slugify(self.title)  
+
+         super().save(*args,**kwargs)
 
 
     def __str__(self):
