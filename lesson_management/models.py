@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from module_management.models import Module
-
+from django.utils.text import slugify
 
 class Lesson(models.Model):
 
@@ -25,7 +25,22 @@ class Lesson(models.Model):
     resource_link = models.CharField(max_length=200,null=True)
 
     duration = models.FloatField()
-    
+
+    def save(self,*args,**kwargs):
+
+         if not self.id:
+
+              lesson_object = Lesson.objects.filter(module = self.module).last()
+
+              if lesson_object:
+
+                   self.order = lesson_object.order + 1
+
+              else:
+                   self.order = 1
+         if not self.slug:
+              self.slug = slugify(self.title)  
+
 
     def __str__(self):
             return f"{self.module.title} - {self.title}"
