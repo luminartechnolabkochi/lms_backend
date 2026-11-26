@@ -24,6 +24,9 @@ class Lesson(models.Model):
 
     resource_link = models.CharField(max_length=200,null=True)
 
+    duration = models.FloatField()
+    
+
     def __str__(self):
             return f"{self.module.title} - {self.title}"
     
